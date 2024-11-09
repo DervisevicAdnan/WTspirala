@@ -28,3 +28,13 @@ li a {
 li a:hover {
     color: #ff9900;
 }
+
+.ikona {
+    transition: transform 1s ease;
+    display: block;
+}
+
+li a:hover .ikona {
+    transform: scale(1.7);
+    color: #ff9900;
+}
