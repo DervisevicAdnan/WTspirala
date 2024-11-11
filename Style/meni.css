@@ -34,7 +34,14 @@ li a:hover {
     display: block;
 }
 
+.meni-tekst{
+    transition: opacity 0.6s ease-in;
+}
+
+li a:hover .meni-tekst{
+    opacity: 0;
+}
+
 li a:hover .ikona {
-    transform: scale(1.7);
-    color: #ff9900;
+    transform: scale(2);
 }

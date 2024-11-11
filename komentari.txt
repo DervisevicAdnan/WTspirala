@@ -1,8 +1,9 @@
 Spirala 1
 
 Zadatak 1
-Pogresno razumio postavku, ikonu odvojio od teksta sa <br>, a napravio preko transforma da se ikona povecava.
-
+Prvi put pogresno razumio postavku, tekst nije nestajao. Ikonu sam bio odvojio od teksta sa <br>, a napravio preko transforma da se ikona povecava.
+U ispravci sam tekst stavio u jedan div, ikonu u drugi div. Zatim sam za div sa tekstom stavio da se za hover mijenja opacity na 0 i tranziciju
+stavio na to.
 
 Zadatak 2
 Mislim da nije moguce postici identican izgled kao sa gridom. Pokusavao sa raznim kombinacijama margina, justify-content i align-items.
