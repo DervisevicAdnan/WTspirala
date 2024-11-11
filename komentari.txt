@@ -1,0 +1,13 @@
+Spirala 1
+
+Zadatak 1
+Pogresno razumio postavku, ikonu odvojio od teksta sa <br>, a napravio preko transforma da se ikona povecava.
+
+
+Zadatak 2
+Mislim da nije moguce postici identican izgled kao sa gridom. Pokusavao sa raznim kombinacijama margina, justify-content i align-items.
+Moze se napraviti da bude staticki istog izgleda za odredjenu sirinu, ali prilikom resize-anja prozora izgubi se centriranje,
+jer se citav flex div posmatra kao jedna cjelina, a ne svaki red zasebno.
+Mozda bi se mogao postici isti izgled koristeci js da se na osnovu sirina izracuna koji su prvi i posljednji elementi u redovima,
+da se njima pristupi i da se postave margine lijevo, odnosno desno, na auto.
+Definitivno ne bih koristio flex za ovakav izgled u praksi.
