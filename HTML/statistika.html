@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Statistika</title>
+        <link rel="stylesheet" type="text/css" href="../Style/statistika.css">
+    </head>
+    <body>
+        <iframe src="meni.html"></iframe>
+    
+        <label for="periodOd"></label>
+        <input id="periodOd" name="periodOd" type="number">
+        <label for="periodDo"></label>
+        <input id="periodDo" name="periodDo" type="number">
+        <input id="dodajPeriod" type="button" onclick="dodajPeriod()" value="Dodaj raspon perioda">
+        <input id="resetujPeriode" type="button" onclick="resetujPeriod()" value="Resetuj raspone perioda">
+        <br>
+        <div id="rasponiPerioda">
+
+        </div>
+
+        <label for="cijenaOd"></label>
+        <input id="cijenaOd" name="cijenaOd" type="number">
+        <label for="cijenaDo"></label>
+        <input id="cijenaDo" name="cijenaDo" type="number">
+        <input id="dodajCijenu" type="button" onclick="dodajCijenu()" value="Dodaj raspon cijena"> 
+        <input id="resetujCijene" type="button" onclick="resetujCijene()" value="Resetuj raspone cijena"> 
+        <br>
+        <div id="rasponiCijena">
+
+        </div>
+
+        <br>
+        <input id="prikaziHistogram" type="button" onclick="iscrtajHistogram()" value="Prikazi histogram">
+
+        <div id="chartsContainer">
+        <canvas id="myChart"></canvas>
+        </div>
+        
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="../Scripts/SpisakNekretnina.js"></script>
+        <script src="../Scripts/StatistikaNekretnina.js"></script>
+        <script src="../Scripts/statistika.js"></script>
+    </body>
+</html>
