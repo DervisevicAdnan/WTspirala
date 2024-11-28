@@ -1,4 +1,4 @@
-function StatistikaNektretnina(){
+function StatistikaNekretnina(){
     let spisakNekretnina;
     let listaKorisnika = [];
     let listaNekretnina = [];
@@ -96,7 +96,7 @@ function StatistikaNektretnina(){
     }
     return {init, prosjecnaKvadratura, outlier, mojeNekretnine, histogramCijena};
 }
-/*let stats = StatistikaNektretnina();
+/*let stats = StatistikaNekretnina();
 stats.init(listaNekretnina,listaKorisnika);
 console.log(stats.histogramCijena([{od:2000,do:2010},{od:2010,do:2024}],[{od:10000,
     do:150000},{od:150000,do:1000000}]));*/
