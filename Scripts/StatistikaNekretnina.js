@@ -12,12 +12,12 @@ function StatistikaNekretnina(){
     }
 
     let prosjecnaKvadratura = function(kriterij){
-        let filtriraneNekretnine = this.spisakNekretnina.filtriraneNekretnine(kriterij);
+        let filtriraneNekretnine = this.spisakNekretnina.filtrirajNekretnine(kriterij);
         let suma = 0;
         for(let i = 0; i < filtriraneNekretnine.length; i++){
             suma += filtriraneNekretnine[i].kvadratura;
         }
-        return suma / filtriraneNekretnine.length;
+        return (filtriraneNekretnine.length)? suma / filtriraneNekretnine.length : 0;
     }
 
     let outlier = function(kriterij, nazivSvojstva){
@@ -26,13 +26,13 @@ function StatistikaNekretnina(){
             suma += this.listaNekretnina[i][nazivSvojstva];
         }
 
-        let prosjek = suma / filtriraneNekretnine.length;
+        let prosjek = suma / this.listaNekretnina.length;
         let max_odstupanje = 0;
         let index_max_odstupanja;
 
-        let filtriraneNekretnine = this.spisakNekretnina.filtriraneNekretnine(kriterij);
+        let filtriraneNekretnine = this.spisakNekretnina.filtrirajNekretnine(kriterij);
         for(let i = 0; i < filtriraneNekretnine.length; i++){
-            let odstupanje = abs(prosjek - filtriraneNekretnine[i][nazivSvojstva]);
+            let odstupanje = Math.abs(prosjek - filtriraneNekretnine[i][nazivSvojstva]);
             if(odstupanje > max_odstupanje){
                 max_odstupanje = odstupanje;
                 index_max_odstupanja = i;
@@ -45,10 +45,13 @@ function StatistikaNekretnina(){
         let lista = [];
         for(let i = 0; i < this.listaNekretnina.length; i++){
             for(let j = 0; j < this.listaNekretnina[i].upiti.length; j++){
-                if(this.listaNekretnina[i].upiti[j].korisnik_id == korisnik.id)
+                if(this.listaNekretnina[i].upiti[j].korisnik_id == korisnik.id){
                     lista.push(this.listaNekretnina[i]);
+                    break;
+                }
             }
         }
+
         return lista.sort(function(a,b){
             let num_a = 0;
             for(let i = 0; i < a.upiti.length; i++){
@@ -60,7 +63,7 @@ function StatistikaNekretnina(){
                 if(b.upiti[i].korisnik_id == korisnik.id)
                     num_b++
             }
-            return num_a - num_b;
+            return num_b - num_a;
             //return a.upiti.length - b.upiti.length;
         });
     }

@@ -10,3 +10,7 @@ iframe {
     width: 100%;
     height: 74px;
 }
+
+body div {
+    margin: 0 2%;
+}

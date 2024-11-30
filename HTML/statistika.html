@@ -1,41 +1,125 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8">
         <title>Statistika</title>
         <link rel="stylesheet" type="text/css" href="../Style/statistika.css">
     </head>
     <body>
         <iframe src="meni.html"></iframe>
+
+        <div id="prosjecnaKvadraturaDiv">
+            <h3>Prosjecna kvadratura nekretnina</h3>
+
+            <label for="tipNekretninePK">Odaberite tip nekretnina za koje vas interesuje prosječna kvadratura</label><br>
+            <select name="tipNekretninePK" id="tipNekretninePK">
+                <option value=""></option>
+                <option value="Stan">Stan</option>
+                <option value="Kuća">Kuća</option>
+                <option value="Poslovni prostor">Poslovni prostor</option>
+            </select><br>
+
+            <label for="minKvadraturaPK">Minimalna kvadratura: </label>
+            <input id="minKvadraturaPK" name="minKvadraturaPK" type="number">
+            <br>
+            <label for="maxKvadraturaPK">Maksimalna kvadratura: </label>
+            <input id="maxKvadraturaPK" name="maxKvadraturaPK" type="number"><br>
+
+            <label for="minCijenaPK">Minimalna cijena: </label>
+            <input id="minCijenaPK" name="minCijenaPK" type="number">
+            <br>
+            <label for="maxCijenaPK">Maksimalna cijena: </label>
+            <input id="maxCijenaPK" name="maxCijenaPK" type="number">
+            <br>
+            <input type="button" id="izracunajPK" onclick="izracunajProsjecnuKvadraturu()" value="Izračunaj prosječnu kvadraturu">
+
+            <div id="rezultatPK"></div>
+            
+        </div>
     
-        <label for="periodOd"></label>
-        <input id="periodOd" name="periodOd" type="number">
-        <label for="periodDo"></label>
-        <input id="periodDo" name="periodDo" type="number">
-        <input id="dodajPeriod" type="button" onclick="dodajPeriod()" value="Dodaj raspon perioda">
-        <input id="resetujPeriode" type="button" onclick="resetujPeriod()" value="Resetuj raspone perioda">
-        <br>
-        <div id="rasponiPerioda">
+        <div id="outlierDiv">
+            <h3>Outlier-i</h3>
 
+            <label for="tipNekretnineOL">Odaberite tip nekretnina za koje vas interesuju outlier-i</label><br>
+            <select name="tipNekretnineOL" id="tipNekretnineOL">
+                <option value=""></option>
+                <option value="Stan">Stan</option>
+                <option value="Kuća">Kuća</option>
+                <option value="Poslovni prostor">Poslovni prostor</option>
+            </select><br>
+
+            <label for="minKvadraturaOL">Minimalna kvadratura: </label>
+            <input id="minKvadraturaOL" name="minKvadraturaOL" type="number">
+            <br>
+            <label for="maxKvadraturaOL">Maksimalna kvadratura: </label>
+            <input id="maxKvadraturaOL" name="maxKvadraturaOL" type="number"><br>
+
+            <label for="minCijenaOL">Minimalna cijena: </label>
+            <input id="minCijenaOL" name="minCijenaOL" type="number">
+            <br>
+            <label for="maxCijenaOL">Maksimalna cijena: </label>
+            <input id="maxCijenaOL" name="maxCijenaOL" type="number">
+            <br>
+
+            <label for="svojstvoOL">Odaberite svojstvo po kojem želite pronaći outlier (kvadratura, cijena, godina_izgradnje): </label>
+            <select id="svojstvoOL" name="svojstvoOL" >
+                <option value=""></option>
+                <option value="kvadratura">kvadratura</option>
+                <option value="cijena">cijena</option>
+                <option value="godina_izgradnje">godina_izgradnje</option>
+            </select><br>
+
+            <input type="button" id="nadjiOL" onclick="nadjiOutlier()" value="Nađi outlier-e">
+
+            <div id="rezultatOL"></div>
+            
         </div>
 
-        <label for="cijenaOd"></label>
-        <input id="cijenaOd" name="cijenaOd" type="number">
-        <label for="cijenaDo"></label>
-        <input id="cijenaDo" name="cijenaDo" type="number">
-        <input id="dodajCijenu" type="button" onclick="dodajCijenu()" value="Dodaj raspon cijena"> 
-        <input id="resetujCijene" type="button" onclick="resetujCijene()" value="Resetuj raspone cijena"> 
-        <br>
-        <div id="rasponiCijena">
+        <div id="mojeNekretnineDiv">
+            <h3>Moje nekretnine</h3>
 
+            <label for="usernameKorisnikaMN">Unesite vaš username: </label>
+            <input name="usernameMN" id="usernameMN" type="text">
+            <br>
+
+            <input type="button" id="nadjiMN" onclick="nadjiNekretnine()" value="Nađi moje nekretnine">
+
+            <div id="rezultatMN"></div>
+            
         </div>
 
-        <br>
-        <input id="prikaziHistogram" type="button" onclick="iscrtajHistogram()" value="Prikazi histogram">
+        <div id="histogramDiv">
+            <h3>Histogram cijena</h3>
 
-        <div id="chartsContainer">
-        <canvas id="myChart"></canvas>
+            <label for="periodOd">Period od: </label>
+            <input id="periodOd" name="periodOd" type="number">
+            <label for="periodDo"> do: </label>
+            <input id="periodDo" name="periodDo" type="number">
+            <input id="dodajPeriod" type="button" onclick="dodajPeriod()" value="Dodaj raspon perioda">
+            <input id="resetujPeriode" type="button" onclick="resetujPeriod()" value="Resetuj raspone perioda">
+            <br>
+            <div id="rasponiPerioda">
+
+            </div>
+
+            <label for="cijenaOd">Cijena od: </label>
+            <input id="cijenaOd" name="cijenaOd" type="number">
+            <label for="cijenaDo"> do: </label>
+            <input id="cijenaDo" name="cijenaDo" type="number">
+            <input id="dodajCijenu" type="button" onclick="dodajCijenu()" value="Dodaj raspon cijena"> 
+            <input id="resetujCijene" type="button" onclick="resetujCijene()" value="Resetuj raspone cijena"> 
+            <br>
+            <div id="rasponiCijena">
+
+            </div>
+
+            <br>
+            <input id="prikaziHistogram" type="button" onclick="iscrtajHistogram()" value="Prikazi histogram">
+
+            <div id="chartsContainer">
+                <canvas id="myChart"></canvas>
+            </div>
         </div>
-        
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="../Scripts/SpisakNekretnina.js"></script>
         <script src="../Scripts/StatistikaNekretnina.js"></script>

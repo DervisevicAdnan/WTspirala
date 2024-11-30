@@ -207,3 +207,67 @@ function iscrtajHistogram(){
     if(chart) chart.destroy();
     chart = new Chart(ctx, config);
 }
+
+function nadjiNekretnine(){
+    let korisnik = null;
+    let username = document.getElementById("usernameMN").value;
+    for(let i = 0; i < listaKorisnika.length; i++){
+        if(listaKorisnika[i].username == username){
+            korisnik = listaKorisnika[i];
+            break;
+        }
+    }
+    if(korisnik === null) {
+        document.getElementById("rezultatMN").innerHTML = "Pogrešan username";
+        return;
+    }
+    let nekretnine = stat.mojeNekretnine(korisnik);
+    //console.log(nekretnine);
+    let rez = "";
+    if(nekretnine){
+        for(let i = 0; i < nekretnine.length; i++){
+            rez += "id: " + nekretnine[i].id + "; tip: " + nekretnine[i].tip_nekretnine +
+                "; naziv: " + nekretnine[i].naziv + "; kvadratura: " + nekretnine[i].kvadratura + 
+                "; cijena: " + nekretnine[i].cijena + "; lokacija: " + nekretnine[i].lokacija + "<br>";
+        }
+    }
+    document.getElementById("rezultatMN").innerHTML = rez;
+}
+
+function napraviKriterij(sufix){
+    let tipNekretnine = document.getElementById("tipNekretnine" + sufix).value;
+    let minKvadratura = parseInt(document.getElementById("minKvadratura" + sufix).value);
+    let maxKvadratura = parseInt(document.getElementById("maxKvadratura" + sufix).value);
+    let minCijena = parseInt(document.getElementById("minCijena" + sufix).value);
+    let maxCijena = parseInt(document.getElementById("maxCijena" + sufix).value);
+    return {
+        tip_nekretnine: (tipNekretnine !== "")? tipNekretnine : null,
+        min_kvadratura: (minKvadratura)? minKvadratura : null,
+        max_kvadratura: (maxKvadratura)? maxKvadratura : null,
+        min_cijena: (minCijena)? minCijena : null,
+        max_cijena: (maxCijena)? maxCijena : null
+    };
+}
+
+function nadjiOutlier(){
+    let kriterij = napraviKriterij("OL");
+    let svojstvo = document.getElementById("svojstvoOL").value;
+    if(["kvadratura", "cijena", "godina_izgradnje"].includes(svojstvo)){
+        let nekretnina = stat.outlier(kriterij, svojstvo);
+        //console.log(nekretnina);
+        if(nekretnina){
+            document.getElementById("rezultatOL").innerHTML =  "id: " + nekretnina.id + "; tip: " + nekretnina.tip_nekretnine +
+                "; naziv: " + nekretnina.naziv + "; kvadratura: " + nekretnina.kvadratura + 
+                "; cijena: " + nekretnina.cijena + "; lokacija: " + nekretnina.lokacija + "<br>";
+            return;
+        }
+    }
+    document.getElementById("rezultatOL").innerHTML = "Neispravni ulazni podaci";
+}
+
+function izracunajProsjecnuKvadraturu(){
+    let kriterij = napraviKriterij("PK");
+    let kvadratura = stat.prosjecnaKvadratura(kriterij);
+    //console.log(kvadratura);
+    document.getElementById("rezultatPK").innerHTML = "Prosjecna kvadratura: " + kvadratura;
+}
