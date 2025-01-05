@@ -380,6 +380,62 @@ app.get('/nekretnine/top5', async (req, res) => {
   }
 });
 
+app.get('/nekretnina/:id', async (req, res) => {
+  let id = req.params.id;
+  try{
+    id = parseInt(id);
+    const nekretnineData = await readJsonFile('nekretnine');
+    let nekretnina = nekretnineData.find((nekret) => nekret.id === id);
+    if(!nekretnina){
+      return res.status(404).json({});
+    }
+    let brUpita = nekretnina.upiti.length
+    if(brUpita > 3){
+      // console.log("Gdje je belaj");
+      nekretnina.upiti = nekretnina.upiti.slice(- 3);
+    }
+    res.status(200).json(nekretnina);
+  } catch (error) {
+    console.error('Error fetching properties data:', error);
+    res.status(500).json({ greska: 'Internal Server Error' });
+  }
+});
+
+app.get('/next/upiti/nekretnina:id', async (req, res) => {
+  let id = req.params.id;
+  try{
+    id = parseInt(id);
+    let page = parseInt(req.query.page);
+
+    const nekretnineData = await readJsonFile('nekretnine');
+    let nekretnina = nekretnineData.find((nekret) => nekret.id === id);
+
+    if(!nekretnina){
+      return res.status(404).json({});
+    }
+
+    let brUpita = nekretnina.upiti.length
+
+    let upitOd = brUpita - ((page + 1) * 3);
+    let upitDo = brUpita - (page * 3);
+
+    // console.log(brUpita);
+    // console.log(upitOd,"-",upitDo);
+
+    if(upitDo <= 0){
+      return res.status(404).json([]);
+    }else if(upitOd < 0){
+      upitOd = 0;
+    }
+
+    return res.status(200).json(nekretnina.upiti.slice(upitOd,upitDo));
+
+  } catch (error) {
+    console.error('Error fetching properties data:', error);
+    res.status(500).json({ greska: 'Internal Server Error' });
+  }
+});
+
 /* ----------------- MARKETING ROUTES ----------------- */
 
 // Route that increments value of pretrage for one based on list of ids in nizNekretnina

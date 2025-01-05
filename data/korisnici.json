@@ -19,5 +19,12 @@
         "prezime": "Dervisevic",
         "username": "adervisevi2",
         "password": "$2b$10$tbsOOplAQ0rfKTzI49qeCOLNJyEwHnQB96b/5tbLqyLVu4Yhqss5C"
+    },
+    {
+        "id": 4,
+        "ime": "Adnan",
+        "prezime": "Dervisevic",
+        "username": "adervisevi3",
+        "password": "$2b$10$tbsOOplAQ0rfKTzI49qeCOLNJyEwHnQB96b/5tbLqyLVu4Yhqss5C"
     }
 ]
