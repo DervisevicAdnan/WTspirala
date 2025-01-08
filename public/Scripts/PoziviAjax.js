@@ -186,12 +186,31 @@ const PoziviAjax = (() => {
         ajax.send()
     }
 
+    function getTop5Nekretnina(lokacija, fnCallback){
+        ajaxRequest('get','/nekretnine/top5?lokacija='+lokacija,null,(err, data) => {
+            // Ako se dogodi greška pri dohvaćanju podataka, proslijedi grešku kroz callback
+            if (err) {
+                fnCallback(error, null);
+            } else {
+                // Ako su podaci uspješno dohvaćeni, parsiraj JSON i proslijedi ih kroz callback
+                try {
+                    const nekretnine = JSON.parse(data);
+                    fnCallback(null, nekretnine);
+                } catch (parseError) {
+                    // Ako se dogodi greška pri parsiranju JSON-a, proslijedi grešku kroz callback
+                    fnCallback(parseError, null);
+                }
+            }
+        });
+    }
+
     return {
         postLogin: impl_postLogin,
         postLogout: impl_postLogout,
         getKorisnik: impl_getKorisnik,
         putKorisnik: impl_putKorisnik,
         postUpit: impl_postUpit,
-        getNekretnine: impl_getNekretnine
+        getNekretnine: impl_getNekretnine,
+        getTop5Nekretnina: getTop5Nekretnina
     };
 })();
