@@ -8,8 +8,22 @@
     <link rel="stylesheet" type="text/css" href="../Style/prijava.css">
 </head>
 
-<body>
+<body id="body">
     <iframe src="meni.html"></iframe>
-</body>
+    <div id="formaDugme">
+    <form>
+        <label for="username">Username: </label>
+        <input type="text" id="username" name="username"><br>
+        <label for="password">Password :</label>
+        <input type="password" id="password" name="password">
+        <br><br>
+    </form>
+    <button id="dugme" type="button" aria-label="login">Login</button>
+    </div>
+    <div id="areaBelow">
 
+    </div>
+</body>
+    <script src="../Scripts/PoziviAjax.js"></script>
+    <script src="../Scripts/prijava.js"></script>
 </html>

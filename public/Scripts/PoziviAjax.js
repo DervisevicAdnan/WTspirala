@@ -188,16 +188,58 @@ const PoziviAjax = (() => {
 
     function getTop5Nekretnina(lokacija, fnCallback){
         ajaxRequest('get','/nekretnine/top5?lokacija='+lokacija,null,(err, data) => {
-            // Ako se dogodi greška pri dohvaćanju podataka, proslijedi grešku kroz callback
             if (err) {
-                fnCallback(error, null);
+                fnCallback(err, null);
             } else {
-                // Ako su podaci uspješno dohvaćeni, parsiraj JSON i proslijedi ih kroz callback
                 try {
                     const nekretnine = JSON.parse(data);
                     fnCallback(null, nekretnine);
                 } catch (parseError) {
-                    // Ako se dogodi greška pri parsiranju JSON-a, proslijedi grešku kroz callback
+                    fnCallback(parseError, null);
+                }
+            }
+        });
+    }
+
+    function getMojiUpiti(fnCallback){
+        ajaxRequest('get','/upiti/moji',null,(err, data) => {
+            if (err) {
+                fnCallback(err, null);
+            } else {
+                try {
+                    const upiti = JSON.parse(data);
+                    fnCallback(null, upiti);
+                } catch (parseError) {
+                    fnCallback(parseError, null);
+                }
+            }
+        });
+    }
+
+    function getNekretnina(nekretnina_id, fnCallback){
+        ajaxRequest('get','/nekretnina/' + nekretnina_id, null, (err, data) => {
+            if (err) {
+                fnCallback(err, null);
+            } else {
+                try {
+                    const nekretnina = JSON.parse(data);
+                    fnCallback(null, nekretnina);
+                } catch (parseError) {
+                    fnCallback(parseError, null);
+                }
+            }
+        });
+    }
+
+    function getNextUpiti(nekretnina_id, page, fnCallback){
+        ajaxRequest('get','/next/upiti/nekretnina' + nekretnina_id + '?page=' + page, null, (err, data) => {
+            if (err) {
+                fnCallback(err, null);
+            } else {
+                try {
+                    const upiti = JSON.parse(data);
+                    fnCallback(null, upiti);
+                } catch (parseError) {
                     fnCallback(parseError, null);
                 }
             }
@@ -211,6 +253,9 @@ const PoziviAjax = (() => {
         putKorisnik: impl_putKorisnik,
         postUpit: impl_postUpit,
         getNekretnine: impl_getNekretnine,
-        getTop5Nekretnina: getTop5Nekretnina
+        getTop5Nekretnina: getTop5Nekretnina,
+        getMojiUpiti: getMojiUpiti,
+        getNekretnina: getNekretnina,
+        getNextUpiti: getNextUpiti
     };
 })();

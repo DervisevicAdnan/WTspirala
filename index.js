@@ -92,11 +92,11 @@ app.post('/login', async (req, res) => {
     }
     const userRate = rateLimit[jsonObj.username];
 
-    // if (userRate.blockedUntil > now) {
-    //   const waitTime = Math.ceil((userRate.blockedUntil - now) / 1000);
-    //   await fs.appendFile(logFilePath, `[${new Date().toISOString()}] - username: "${jsonObj.username}" - status: "neuspješno"\n`);
-    //   return res.status(429).json({ greska: `Previse neuspjesnih pokusaja. Pokusajte ponovo za 1 minutu.` });
-    // }
+    if (userRate.blockedUntil > now) {
+      const waitTime = Math.ceil((userRate.blockedUntil - now) / 1000);
+      await fs.appendFile(logFilePath, `[${new Date().toISOString()}] - username: "${jsonObj.username}" - status: "neuspješno"\n`);
+      return res.status(429).json({ greska: `Previse neuspjesnih pokusaja. Pokusajte ponovo za ` + waitTime + ' s.' });
+    }
 
     const data = await fs.readFile(path.join(__dirname, 'data', 'korisnici.json'), 'utf-8');
     const korisnici = JSON.parse(data);
@@ -127,9 +127,10 @@ app.post('/login', async (req, res) => {
       userRate.lastAttempt = now;
       await fs.appendFile(logFilePath, `[${new Date().toISOString()}] - username: "${jsonObj.username}" - status: "neuspješno"\n`);
 
-      // Blokiranje korisnika nakon 3 neuspješna pokušaja
+
       if (userRate.attempts >= 3) {
-        userRate.blockedUntil = now + 60000; // Blokiraj na 1 minutu
+        userRate.attempts = 0;
+        userRate.blockedUntil = now + 60000;
         return res.status(429).json({ greska: 'Previse neuspjesnih pokusaja. Pokusajte ponovo za 1 minutu.' });
       }
       res.json({ poruka: 'Neuspješna prijava' });
@@ -412,6 +413,10 @@ app.get('/next/upiti/nekretnina:id', async (req, res) => {
 
     if(!nekretnina){
       return res.status(404).json({});
+    }
+
+    if(page < 0){
+      return res.status(404).json([]);
     }
 
     let brUpita = nekretnina.upiti.length
