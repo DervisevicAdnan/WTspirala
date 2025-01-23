@@ -42,7 +42,7 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
             nekretninaElement.appendChild(cijenaElement);
 
             const detaljiDugme = document.createElement('a');
-            detaljiDugme.href = '../HTML/detalji.html'; // hardkodiran html
+            detaljiDugme.href = '../html/detalji.html?id=' + nekretnina.id; // hardkodiran html
             detaljiDugme.classList.add('detalji-dugme');
             detaljiDugme.textContent = 'Detalji';
             nekretninaElement.appendChild(detaljiDugme);
