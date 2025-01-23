@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meni</title>
     <link rel="stylesheet" type="text/css" href="../Style/meni.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=account_circle,apartment,info,login,newspaper" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=account_circle,apartment,info,login,logout,newspaper" />
 </head>
 
 <body>
     <ul>
-        <li><a href="profil.html" target="_parent">
+        <li><a id="profilLink" href="profil.html" target="_parent">
             <div class="meni-tekst">Profil</div>
             <div class="meni-ikona">
                 <span class="material-symbols-outlined ikona">
@@ -19,7 +19,7 @@
                 </span>
             </div>
         </a></li>
-        <li><a href="nekretnine.html" target="_parent">
+        <li><a id="nekretnineLink" href="nekretnine.html" target="_parent">
             <div class="meni-tekst">Nekretnine</div>
             <div class="meni-ikona">
                 <span class="material-symbols-outlined ikona">
@@ -27,7 +27,7 @@
                 </span>
             </div>
         </a></li>
-        <li><a href="detalji.html" target="_parent">
+        <li><a id="detaljiLink" href="detalji.html" target="_parent">
             <div class="meni-tekst">Detalji</div>
             <div class="meni-ikona">
                 <span class="material-symbols-outlined ikona">
@@ -35,7 +35,7 @@
                 </span>
             </div>
         </a></li>
-        <li><a href="vijesti.html" target="_parent">
+        <li><a id="vijestiLink" href="vijesti.html" target="_parent">
             <div class="meni-tekst">Vijesti</div>
             <div class="meni-ikona">
                 <span class="material-symbols-outlined ikona">
@@ -43,7 +43,7 @@
                 </span>
             </div>
         </a></li>
-        <li><a href="prijava.html" target="_parent">
+        <li><a id="prijavaLink" href="prijava.html" target="_parent">
             <div class="meni-tekst">Prijava</div>
             <div class="meni-ikona">
                 <span class="material-symbols-outlined ikona">
@@ -51,7 +51,16 @@
                 </span>
             </div>
         </a></li>
+        <li><a id="odjavaLink" href=""  target="_parent">
+            <div class="meni-tekst">Odjava</div>
+            <div class="meni-ikona">
+                <span class="material-symbols-outlined ikona">
+                    logout
+                </span>
+            </div>
+        </a></li>
     </ul>
 </body>
-
+<script src="../Scripts/PoziviAjax.js"></script>
+<script src="../Scripts/meni.js"></script>
 </html>
