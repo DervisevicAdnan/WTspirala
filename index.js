@@ -205,6 +205,22 @@ app.get('/korisnik', async (req, res) => {
   }
 });
 
+app.get('/idusernames', async (req, res) => {
+  try {
+    const users = await readJsonFile('korisnici');
+
+    const idUsernamesMap = {};
+    users.forEach(user => {
+      idUsernamesMap[user.id] = user.username;
+    });
+
+    res.status(200).json(idUsernamesMap);
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    res.status(500).json({ greska: 'Internal Server Error' });
+  }
+});
+
 /*
 Allows logged user to make a request for a property
 */

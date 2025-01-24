@@ -86,12 +86,7 @@
     "godina_izgradnje": 2005,
     "datum_objave": "23.08.2023.",
     "opis": "Magnis dis parturient montes.",
-    "upiti": [
-      {
-        "korisnik_id": 2,
-        "tekst_upita": "Integer tincidunt."
-      }
-    ]
+    "upiti": []
   },
   {
     "id": 6,

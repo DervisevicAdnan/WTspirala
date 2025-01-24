@@ -6,13 +6,28 @@ function postaviCarousel(glavniElement, sviElementi, nekretnina_id, indeks=0){
 
     let Elementi = [...sviElementi]
 
+    let idUsername;
+
+    PoziviAjax.getIdUsernames((err, mapa) => {
+        if(err){
+            console.log("Greska pri dobavljanju username-a", err);
+        }else{
+            idUsername = mapa;
+        }
+        glavniElement.innerHTML = napraviHTMLUpita(Elementi[indeks]).outerHTML;
+    });
+
     const napraviHTMLUpita = function(upit){
         const divUpit = document.createElement('div');
         divUpit.classList.add('upit');
 
         const pUsername = document.createElement('p');
         const pStrongUsername = document.createElement('strong');
-        pStrongUsername.innerHTML = upit.korisnik_id;
+        if(idUsername && idUsername[upit.korisnik_id]){
+            pStrongUsername.innerHTML = idUsername[upit.korisnik_id];
+        }else{
+            pStrongUsername.innerHTML = upit.korisnik_id;
+        }
 
         pUsername.appendChild(pStrongUsername);
         divUpit.appendChild(pUsername);
@@ -24,9 +39,6 @@ function postaviCarousel(glavniElement, sviElementi, nekretnina_id, indeks=0){
         
         return divUpit;
     }
-
-    glavniElement.innerHTML = napraviHTMLUpita(Elementi[indeks]).outerHTML;
-
 
     const fnLijevo = function(){
         //console.log("Pozvan lijevo");

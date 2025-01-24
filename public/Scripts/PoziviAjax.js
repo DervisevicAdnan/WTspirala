@@ -246,6 +246,21 @@ const PoziviAjax = (() => {
         });
     }
 
+    function getIdUsernames(fnCallback){
+        ajaxRequest('get','/idusernames', null, (err, data) => {
+            if (err) {
+                fnCallback(err, null);
+            } else {
+                try {
+                    const mapa = JSON.parse(data);
+                    fnCallback(null, mapa);
+                } catch (parseError) {
+                    fnCallback(parseError, null);
+                }
+            }
+        });
+    }
+
     return {
         postLogin: impl_postLogin,
         postLogout: impl_postLogout,
@@ -256,6 +271,7 @@ const PoziviAjax = (() => {
         getTop5Nekretnina: getTop5Nekretnina,
         getMojiUpiti: getMojiUpiti,
         getNekretnina: getNekretnina,
-        getNextUpiti: getNextUpiti
+        getNextUpiti: getNextUpiti,
+        getIdUsernames: getIdUsernames
     };
 })();
