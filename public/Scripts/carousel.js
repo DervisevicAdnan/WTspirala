@@ -47,7 +47,10 @@ function postaviCarousel(glavniElement, sviElementi, nekretnina_id, indeks=0){
             }else{
                 PoziviAjax.getNextUpiti(nekretnina_id,parseInt(Elementi.length / 3), (err, upiti) => {
                     if(err){
-
+                        console.log("Greska pri dobavljanju stranice", err);
+                        indeks = 0;
+                        ucitaniSvi = true;
+                        glavniElement.innerHTML = napraviHTMLUpita(Elementi[indeks]).outerHTML;
                     }else{
                         ucitaniSvi = upiti.length < 3;
 

@@ -44,7 +44,7 @@ function prikaziTop5Nekretnina(lokacija){
     const naslovTop5 = document.getElementById('naslovTop5');
     PoziviAjax.getTop5Nekretnina(lokacija, (err, nek) => {
         if(err){
-            
+            console.error("Greška prilikom dohvatanja nekretnina sa servera:", err);
         }else{
             naslovTop5.innerHTML = "TOP 5 NEKRETNINA ZA: " + lokacija;
             naslovTop5.style.display = "block";
@@ -133,7 +133,7 @@ const divUpiti = document.getElementById('upiti');
 
 PoziviAjax.getNekretnina(id, (err, nekretnina) => {
     if(err){
-        
+        console.error("Greška prilikom dohvatanja nekretnine sa servera:", err);
     }else{
         spojiDetaljiOsnovno(divOsnovno, nekretnina);
         spojiDetaljiDetalje(divDetalji, nekretnina);

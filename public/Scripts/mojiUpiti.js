@@ -1,6 +1,6 @@
 PoziviAjax.getMojiUpiti((err, upiti) => {
     if(err){
-
+        console.error("Greška prilikom dohvatanja upita sa servera:", err);
     }else{
         const divUpiti = document.getElementById('upiti');
         upiti.forEach(upit => {

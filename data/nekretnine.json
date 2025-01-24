@@ -177,15 +177,15 @@
     "upiti": [
       {
         "korisnik_id": 3,
-        "tekst_upita": "Integer tincidunt."
+        "tekst_upita": "Integer tincidunt. 1"
       },
       {
         "korisnik_id": 3,
-        "tekst_upita": "Integer tincidunt."
+        "tekst_upita": "Integer tincidunt. 2"
       },
       {
         "korisnik_id": 3,
-        "tekst_upita": "Integer tincidunt."
+        "tekst_upita": "Integer tincidunt. 3"
       }
     ]
   }
