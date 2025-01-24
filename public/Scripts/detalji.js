@@ -1,12 +1,9 @@
 function spojiNekretnine(divReferenca, nekretnine) {
-    // divReferenca = document.getElementById('top5');
     divReferenca.innerHTML = '';
 
     if (nekretnine.length === 0) {
         divReferenca.innerHTML = '<p>Trenutno nema dostupnih nekretnina ovoga tipa.</p>';
     } else {
-        console.log("Usao i ovdje");
-        console.log(divReferenca.outerHTML);
         nekretnine.forEach(nekretnina => {
             
             const nekretninaElement = document.createElement('div');
@@ -32,20 +29,17 @@ function spojiNekretnine(divReferenca, nekretnine) {
             nekretninaElement.appendChild(cijenaElement);
 
             const detaljiDugme = document.createElement('a');
-            detaljiDugme.href = '../detalji.html?id=' + nekretnina.id; // hardkodiran html
+            detaljiDugme.href = '../detalji.html?id=' + nekretnina.id;
             detaljiDugme.classList.add('detalji-dugme');
             detaljiDugme.textContent = 'Detalji';
             nekretninaElement.appendChild(detaljiDugme);
 
-            console.log(nekretninaElement.outerHTML);
-            // Dodavanje kreiranog elementa u divReferenci
             divReferenca.appendChild(nekretninaElement);
         });
     }
 }
 
 function prikaziTop5Nekretnina(lokacija){
-    console.log("evoo meee");
     const divTop5 = document.getElementById('top5');
     const naslovTop5 = document.getElementById('naslovTop5');
     PoziviAjax.getTop5Nekretnina(lokacija, (err, nek) => {
@@ -56,7 +50,7 @@ function prikaziTop5Nekretnina(lokacija){
             naslovTop5.style.display = "block";
 
             spojiNekretnine(divTop5, nek);
-            divTop5.style.display = "inline-flex";
+            divTop5.style.display = "flex";
         }
     })
 }
@@ -143,7 +137,6 @@ PoziviAjax.getNekretnina(id, (err, nekretnina) => {
     }else{
         spojiDetaljiOsnovno(divOsnovno, nekretnina);
         spojiDetaljiDetalje(divDetalji, nekretnina);
-        //spojiNoveUpite(divUpiti, nekretnina.upiti);
 
         carouselControls = postaviCarousel(document.getElementById("upiti"), nekretnina.upiti, id);
         document.getElementById("prethodni").addEventListener("click", carouselControls.fnLijevo);
