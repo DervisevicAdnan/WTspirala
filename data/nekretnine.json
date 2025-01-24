@@ -126,6 +126,10 @@
       {
         "korisnik_id": 2,
         "tekst_upita": "Integer tincidunt."
+      },
+      {
+        "korisnik_id": 3,
+        "tekst_upita": "radi li"
       }
     ]
   },
