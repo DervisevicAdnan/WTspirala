@@ -23,17 +23,17 @@ function postaviCarousel(glavniElement, sviElementi, nekretnina_id, indeks=0){
 
         const pUsername = document.createElement('p');
         const pStrongUsername = document.createElement('strong');
-        if(idUsername && idUsername[upit.korisnik_id]){
-            pStrongUsername.innerHTML = idUsername[upit.korisnik_id];
+        if(idUsername && idUsername[upit.korisnikId]){
+            pStrongUsername.innerHTML = idUsername[upit.korisnikId];
         }else{
-            pStrongUsername.innerHTML = upit.korisnik_id;
+            pStrongUsername.innerHTML = upit.korisnikId;
         }
 
         pUsername.appendChild(pStrongUsername);
         divUpit.appendChild(pUsername);
 
         const pTekstUpita = document.createElement('p');
-        pTekstUpita.innerHTML = upit.tekst_upita;
+        pTekstUpita.innerHTML = upit.tekst;
 
         divUpit.appendChild(pTekstUpita);
         
