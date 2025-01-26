@@ -281,7 +281,7 @@ app.post('/upit', async (req, res) => {
     // const users = await readJsonFile('korisnici');
 
     // Read properties data from the JSON file
-    const nekretnine = await readJsonFile('nekretnine');
+    //const nekretnine = await readJsonFile('nekretnine');
 
     // Find the user by username
     // const loggedInUser = users.find((user) => user.username === req.session.username);
@@ -774,7 +774,7 @@ app.get('/nekretnina/:id/interesovanja', async (req, res) => {
           return vez.korisnikId == loggedInUser.id;
         });
         // console.log("vezana", jestVezana);
-        if (loggedInUser.id != ponudaTmp.korisnikId || jestVezana) {
+        if (loggedInUser.id != ponudaTmp.korisnikId && !jestVezana) {
           delete ponudaTmp.cijenaPonude;
         }
       }

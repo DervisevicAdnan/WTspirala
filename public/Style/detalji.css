@@ -169,3 +169,64 @@ iframe {
   border-radius: 5px;
   cursor: pointer;
 }
+
+
+.interests-box {
+  margin-bottom: 20px;
+  background-color: #f8f8f8;
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.interests-box h2 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.interest {
+  padding: 10px;
+  border: 1px solid black;
+  margin-top: 5px;
+  border-radius: 5px;
+  background-color: white;
+  white-space: pre-line;
+}
+
+.interest-form-div {
+  border: 1px solid #000;
+  padding: 20px;
+  margin: 20px;
+}
+
+.interest-form-box h2 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+
+#interest-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-control {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: calc(100% - 20px); /* Adjust for padding and border */
+}
+
+textarea.form-control {
+  height: 100px;
+  resize: vertical;
+}

@@ -275,6 +275,51 @@ const PoziviAjax = (() => {
         });
     }
 
+    function postZahtjev(nekretnina_id, tekst, trazeniDatum, fnCallback){
+        ajaxRequest('post','/nekretnina/' + nekretnina_id + "/zahtjev", {tekst, trazeniDatum}, (err, data) => {
+            if (err) {
+                fnCallback(err, null);
+            } else {
+                try {
+                    const mapa = JSON.parse(data);
+                    fnCallback(null, mapa);
+                } catch (parseError) {
+                    fnCallback(parseError, null);
+                }
+            }
+        });
+    }
+
+    function postPonuda(nekretnina_id, tekst, ponudaCijene, datumPonude, idVezanePonude, fnCallback){
+        ajaxRequest('post','/nekretnina/' + nekretnina_id + "/ponuda", {tekst, ponudaCijene, datumPonude, idVezanePonude, odbijenaPonuda: false}, (err, data) => {
+            if (err) {
+                fnCallback(err, null);
+            } else {
+                try {
+                    const mapa = JSON.parse(data);
+                    fnCallback(null, mapa);
+                } catch (parseError) {
+                    fnCallback(parseError, null);
+                }
+            }
+        });
+    }
+
+    function getInteresovanja(nekretnina_id, fnCallback){
+        ajaxRequest('get','/nekretnina/' + nekretnina_id + "/interesovanja", null, (err, data) => {
+            if (err) {
+                fnCallback(err, null);
+            } else {
+                try {
+                    const mapa = JSON.parse(data);
+                    fnCallback(null, mapa);
+                } catch (parseError) {
+                    fnCallback(parseError, null);
+                }
+            }
+        });
+    }
+
     return {
         postLogin: impl_postLogin,
         postLogout: impl_postLogout,
@@ -286,6 +331,9 @@ const PoziviAjax = (() => {
         getMojiUpiti: getMojiUpiti,
         getNekretnina: getNekretnina,
         getNextUpiti: getNextUpiti,
-        getIdUsernames: getIdUsernames
+        getIdUsernames: getIdUsernames,
+        postZahtjev: postZahtjev,
+        postPonuda: postPonuda,
+        getInteresovanja: getInteresovanja
     };
 })();

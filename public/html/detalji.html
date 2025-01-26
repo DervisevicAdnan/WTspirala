@@ -26,6 +26,26 @@
         <button id="prethodni">&lt;</button>
         <button id="sljedeci">&gt;</button>
     </div>
+    
+    <h3>DODAJ INTERESOVANJE</h3>
+    <div class="interest-form-div">
+        <form id="interest-form">
+            <div class="form-group">
+                <label for="interest-type">Tip interesovanja:</label>
+                <select id="interest-type" class="form-control" required>
+                    <option value="" disabled selected>Odaberite tip</option>
+                    <option value="upit">Upit</option>
+                    <option value="zahtjev">Zahtjev</option>
+                    <option value="ponuda">Ponuda</option>
+                </select>
+            </div>
+            <div id="form-fields-container">
+                <!-- Polja će se dinamički učitavati pomoću JavaScripta -->
+            </div>
+            <button type="submit" class="btn">Dodaj interesovanje</button>
+        </form>
+    </div>
+
     <script src="../Scripts/PoziviAjax.js"></script>
     <script src="../Scripts/carousel.js"></script>
     <script src="../Scripts/detalji.js"></script>
