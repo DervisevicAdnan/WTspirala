@@ -914,6 +914,80 @@ app.post('/nekretnina/:id/zahtjev', async (req, res) => {
   }
 });
 
+app.put('/nekretnina/:id/zahtjev/:zid', async (req, res) => {
+  if (!req.session.username) {
+    return res.status(401).json({ greska: 'Neautorizovan pristup' });
+  }
+
+  try{
+    const id = req.params.id;
+    const zid = req.params.zid;
+    let { odobren, addToTekst } = req.body;
+
+    const loggedInUser = await Korisnik.findOne({
+      where: {
+        "username": req.session.username
+      }
+    });
+
+    if(!loggedInUser.admin){
+      return res.status(401).json({ greska: 'Neautorizovan pristup' });
+    }
+
+    let nekretnina = await Nekretnina.findOne({
+      where: {
+        "id": id
+      }
+    });
+    if (!nekretnina) {
+      return res.status(404).json({ greska: "Nekrentnina ne postoji" });
+    }
+
+    let zahtjev = await Zahtjev.findOne({
+      where: {
+        "id": zid
+      }
+    });
+    if (!zahtjev) {
+      return res.status(404).json({ greska: "Zahtjev ne postoji" });
+    }
+
+    if(odobren === null){
+      return res.status(404).json({ greska: "Nevalidno odobrenje" });
+    }
+
+    if(addToTekst === null && !odobren){
+      return res.status(404).json({ greska: "Nevalidni parametri" });
+    }
+    // console.log("tekst1: ",addToTekst);
+
+    if(addToTekst){
+      addToTekst = zahtjev.tekst + " ODGOVOR ADMINA: " + addToTekst;
+    } else {
+      addToTekst = zahtjev.tekst;
+    }
+
+    // console.log("tekst2: ",addToTekst);
+    // console.log("zahtjev: ",zahtjev);
+
+    await Zahtjev.update({
+      odobren: odobren,
+      tekst: addToTekst
+    }, {
+      where: {
+        "id": zid
+      }
+    });
+
+    res.status(200).json({ poruka: 'Uspjesno odgovoreno na zahtjev' });
+
+
+  } catch (error) {
+    console.error('Error processing query:', error);
+    res.status(500).json({ greska: 'Internal Server Error' });
+  }
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
