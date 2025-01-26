@@ -18,6 +18,27 @@ const PORT = 3000;
 //console.log(bcrypt.hashSync("12345678",bcrypt.genSaltSync()));
 const rateLimit = {};
 
+function datumNakonDanasnjeg(datumString) {
+  const dijelovi = datumString.split(".");
+  if (dijelovi.length !== 3) {
+    return false;
+  }
+
+  const dan = parseInt(dijelovi[0], 10);
+  const mjesec = parseInt(dijelovi[1], 10) - 1;
+  const godina = parseInt(dijelovi[2], 10);
+
+  
+  if (isNaN(dan) || isNaN(mjesec) || isNaN(godina)) {
+    return false;
+  }
+
+  const datum = new Date(godina, mjesec, dan);
+  const danas = new Date();
+  danas.setHours(0, 0, 0, 0);
+  return datum >= danas;
+}
+
 
 app.use(session({
   secret: 'tajna sifra',
@@ -742,29 +763,107 @@ app.get('/nekretnina/:id/interesovanja', async (req, res) => {
 
     novePonude = await Promise.all(ponude.map(async (ponuda) => {
       let ponudaTmp = ponuda.dataValues;
-    
+
       if (!loggedInUser) {
         delete ponudaTmp.cijenaPonude;
       } else {
         let vezane = await ponuda.vezanePonude;
-        console.log(vezane);
-    
+        // console.log(vezane);
+
         let jestVezana = vezane.some((vez) => {
           return vez.korisnikId == loggedInUser.id;
         });
-        console.log("vezana", jestVezana);
+        // console.log("vezana", jestVezana);
         if (loggedInUser.id != ponudaTmp.korisnikId || jestVezana) {
           delete ponudaTmp.cijenaPonude;
         }
       }
-        console.log("nove", ponudaTmp)
-        return ponudaTmp;
+      // console.log("nove", ponudaTmp)
+      return ponudaTmp;
     }));
 
-    console.log("nove na kraju", novePonude);
+    // console.log("nove na kraju", novePonude);
 
     res.status(200).json(upiti.concat(zahtjevi, novePonude));
 
+  } catch (error) {
+    console.error('Error processing query:', error);
+    res.status(500).json({ greska: 'Internal Server Error' });
+  }
+});
+
+app.post('/nekretnina/:id/ponuda', async (req, res) => {
+  if (!req.session.username) {
+    return res.status(401).json({ greska: 'Neautorizovan pristup' });
+  }
+
+  try {
+    const id = req.params.id;
+    const { tekst, ponudaCijene, datumPonude, idVezanePonude, odbijenaPonuda } = req.body;
+
+    const loggedInUser = await Korisnik.findOne({
+      where: {
+        "username": req.session.username
+      }
+    });
+
+    console.log(datumPonude);
+
+    if (idVezanePonude) {
+      let vezanaPonuda = await Ponuda.findOne({
+        where: {
+          "id": idVezanePonude
+        }
+      });
+      if (!vezanaPonuda) {
+        return res.status(404).json({ greska: "Ponuda sa idVezanePonude ne postoji" });
+      }
+
+      // admin moze na sve
+      
+      let vezane = await vezanaPonuda.vezanePonude;
+
+      // korisnik na vezane
+      if (!loggedInUser.admin) {
+        let jestVezana = vezane.some((vez) => {
+          return vez.korisnikId == loggedInUser.id;
+        });
+        // console.log("vezana", jestVezana);
+        if (loggedInUser.id != vezanaPonuda.korisnikId && !jestVezana) {
+          return res.status(404).json({ greska: "Nije moguce vezati na tu ponudu" });
+        }
+      }
+
+      if(vezane.some((vez) => {
+        return vez.odbijenaPonuda;
+      })){
+        return res.status(404).json({ greska: "Nije moguce vezati na tu ponudu" });
+      }
+    }
+
+
+
+    await Ponuda.create({ 
+      korisnikId: loggedInUser.id,
+      nekretninaId: id,
+      tekst: tekst,
+      cijenaPonude: ponudaCijene,
+      datumPonude: datumPonude,
+      odbijenaPonuda: odbijenaPonuda,
+      vezanaPonudaId: idVezanePonude
+    });
+
+    res.status(200).json({ poruka: 'Ponuda je uspješno dodana' });
+
+  } catch (error) {
+    console.error('Error fetching properties data:', error);
+    res.status(500).json({ greska: 'Internal Server Error' });
+  }
+});
+
+app.post('/nekretnina/:id/zahtjev', async (req, res) => {
+  try{
+    
   } catch (error) {
     console.error('Error processing query:', error);
     res.status(500).json({ greska: 'Internal Server Error' });
