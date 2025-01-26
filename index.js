@@ -807,7 +807,16 @@ app.post('/nekretnina/:id/ponuda', async (req, res) => {
       }
     });
 
-    console.log(datumPonude);
+    let nekretnina = await Nekretnina.findOne({
+      where: {
+        "id": id
+      }
+    });
+    if (!nekretnina) {
+      return res.status(404).json({ greska: "Nekrentnina ne postoji" });
+    }
+
+    // console.log(datumPonude);
 
     if (idVezanePonude) {
       let vezanaPonuda = await Ponuda.findOne({
@@ -862,8 +871,43 @@ app.post('/nekretnina/:id/ponuda', async (req, res) => {
 });
 
 app.post('/nekretnina/:id/zahtjev', async (req, res) => {
+  if (!req.session.username) {
+    return res.status(401).json({ greska: 'Neautorizovan pristup' });
+  }
+
   try{
-    
+    const id = req.params.id;
+    const { tekst, trazeniDatum } = req.body;
+
+    const loggedInUser = await Korisnik.findOne({
+      where: {
+        "username": req.session.username
+      }
+    });
+
+    let nekretnina = await Nekretnina.findOne({
+      where: {
+        "id": id
+      }
+    });
+    if (!nekretnina) {
+      return res.status(404).json({ greska: "Nekrentnina ne postoji" });
+    }
+
+    if(!datumNakonDanasnjeg(trazeniDatum)){
+      return res.status(404).json({ greska: "Nevalidan datum" });
+    }
+
+    await Zahtjev.create({
+      korisnikId: loggedInUser.id,
+      nekretninaId: id,
+      tekst: tekst,
+      trazeniDatum: trazeniDatum
+    });
+
+    res.status(200).json({ poruka: 'Zahtjev je uspješno dodan' });
+
+
   } catch (error) {
     console.error('Error processing query:', error);
     res.status(500).json({ greska: 'Internal Server Error' });
