@@ -33,7 +33,8 @@ module.exports = function (sequelize, DataTypes) {
         },
         odobren: {
             type: Sequelize.BOOLEAN,
-            defaultValue: false,
+            allowNull: true,
+            defaultValue: null,
         },
     }, {
         timestamps: false,

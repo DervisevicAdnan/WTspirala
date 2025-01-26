@@ -333,7 +333,7 @@ app.get('/upiti/moji', async (req, res) => {
 
     // Find all upiti associated with the user
     const upiti = await Upit.findAll({
-      attributes:[
+      attributes: [
         'nekretninaId',
         'tekst'
       ],
@@ -446,7 +446,7 @@ app.get('/nekretnine', async (req, res) => {
     let nekretnine = await Nekretnina.findAll();
     nekretnine = nekretnine.map(nek => nek.dataValues);
 
-    for(let nek of nekretnine){
+    for (let nek of nekretnine) {
       let upiti = await Upit.findAll({
         where: {
           "nekretninaId": nek.id
@@ -474,7 +474,7 @@ app.get('/nekretnine/top5', async (req, res) => {
     let nekretnineData = await Nekretnina.findAll();
     nekretnineData = nekretnineData.map(nek => nek.dataValues);
 
-    for(let nek of nekretnineData){
+    for (let nek of nekretnineData) {
       let upiti = await Upit.findAll({
         where: {
           "nekretninaId": nek.id
@@ -518,11 +518,11 @@ app.get('/nekretnina/:id', async (req, res) => {
         "id": id
       }
     });
-    
+
     if (!nekretnina) {
       return res.status(404).json({});
     }
-    
+
     nekretnina = nekretnina.dataValues;
 
     let upiti = await Upit.findAll({
@@ -532,7 +532,7 @@ app.get('/nekretnina/:id', async (req, res) => {
     });
 
     upiti = upiti.map(upit => upit.dataValues);
-    
+
     let brUpita = upiti.length
     if (brUpita > 3) {
       upiti = upiti.slice(- 3);
@@ -692,6 +692,82 @@ app.post('/marketing/osvjezi/klikovi', async (req, res) => {
   } catch (error) {
     console.error('Greška prilikom čitanja ili pisanja JSON datoteke:', error);
     res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/nekretnina/:id/interesovanja', async (req, res) => {
+  try {
+    let id = req.params.id;
+
+    let upiti = await Upit.findAll({
+      where: {
+        "nekretninaId": id
+      }
+    });
+    upiti = upiti.map(upit => upit.dataValues);
+
+    let zahtjevi = await Zahtjev.findAll({
+      where: {
+        "nekretninaId": id
+      }
+    });
+    zahtjevi = zahtjevi.map(zahtjev => zahtjev.dataValues);
+
+    let ponude = await Ponuda.findAll({
+      where: {
+        "nekretninaId": id
+      }
+    });
+
+    let loggedInUser = null;
+    if (req.session.username) {
+      loggedInUser = await Korisnik.findOne({
+        where: {
+          username: req.session.username
+        }
+      });
+
+      if (!loggedInUser) {
+        return res.status(404).json({ greska: 'Korisnik nije pronađen' });
+      }
+
+
+      if (loggedInUser.admin) {
+        ponude = ponude.map(ponuda => ponuda.dataValues);
+        return res.status(200).json(upiti.concat(zahtjevi, ponude));
+      }
+    }
+
+    let novePonude = []
+
+    novePonude = await Promise.all(ponude.map(async (ponuda) => {
+      let ponudaTmp = ponuda.dataValues;
+    
+      if (!loggedInUser) {
+        delete ponudaTmp.cijenaPonude;
+      } else {
+        let vezane = await ponuda.vezanePonude;
+        console.log(vezane);
+    
+        let jestVezana = vezane.some((vez) => {
+          return vez.korisnikId == loggedInUser.id;
+        });
+        console.log("vezana", jestVezana);
+        if (loggedInUser.id != ponudaTmp.korisnikId || jestVezana) {
+          delete ponudaTmp.cijenaPonude;
+        }
+      }
+        console.log("nove", ponudaTmp)
+        return ponudaTmp;
+    }));
+
+    console.log("nove na kraju", novePonude);
+
+    res.status(200).json(upiti.concat(zahtjevi, novePonude));
+
+  } catch (error) {
+    console.error('Error processing query:', error);
+    res.status(500).json({ greska: 'Internal Server Error' });
   }
 });
 
