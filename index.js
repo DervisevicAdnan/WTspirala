@@ -88,27 +88,6 @@ async function saveJsonFile(filename, data) {
 
 sequelize.sync({ alter: true }).then(() => {
   console.log('Baza podataka sinhronizirana!');
-  
-  let ponudica = Ponuda.findOne({
-    where: {
-      id:1
-    }
-  }).then( async (ponuda) => {
-    console.log("Povezane");
-    console.log(ponuda);
-    console.log(await ponuda.vezanePonude);
-    console.log("Povezane kraj");
-
-    /*try {
-      const hijerarhijaPonuda = ponuda.vezanePonude();
-      console.log("Hijerarhija povezanih ponuda:", JSON.stringify(hijerarhijaPonuda, null, 2));
-  } catch (error) {
-      console.error("Greška pri dohvaćanju vezanih ponuda:", error);
-  }*/
-  });
-
-  
-
 });
 
 
@@ -426,35 +405,35 @@ app.put('/korisnik', async (req, res) => {
   }
 });
 
-async function nesto() {
-  const nekretnineData = await readJsonFile('nekretnine');
+// async function nesto() {
+//   const nekretnineData = await readJsonFile('nekretnine');
 
-  for (let nek of nekretnineData) {
-    const nekretnina = await Nekretnina.create({
-      tip_nekretnine: nek.tip_nekretnine,
-      naziv: nek.naziv,
-      kvadratura: nek.kvadratura,
-      cijena: nek.cijena,
-      tip_grijanja: nek.tip_grijanja,
-      lokacija: nek.lokacija,
-      godina_izgradnje: nek.godina_izgradnje,
-      datum_objave: nek.datum_objave,
-      opis: nek.opis
-    });
+//   for (let nek of nekretnineData) {
+//     const nekretnina = await Nekretnina.create({
+//       tip_nekretnine: nek.tip_nekretnine,
+//       naziv: nek.naziv,
+//       kvadratura: nek.kvadratura,
+//       cijena: nek.cijena,
+//       tip_grijanja: nek.tip_grijanja,
+//       lokacija: nek.lokacija,
+//       godina_izgradnje: nek.godina_izgradnje,
+//       datum_objave: nek.datum_objave,
+//       opis: nek.opis
+//     });
 
-    for (let upit of nek.upiti) {
-      console.log("NEKRETNINA ID :", nekretnina.id);
-      console.log(nekretnina);
-      console.log(upit);
-      await Upit.create({
-        korisnikId: upit.korisnik_id,
-        nekretninaId: nekretnina.id,
-        tekst: upit.tekst_upita,
-      });
-    }
-  }
-}
-// nesto();
+//     for (let upit of nek.upiti) {
+//       console.log("NEKRETNINA ID :", nekretnina.id);
+//       console.log(nekretnina);
+//       console.log(upit);
+//       await Upit.create({
+//         korisnikId: upit.korisnik_id,
+//         nekretninaId: nekretnina.id,
+//         tekst: upit.tekst_upita,
+//       });
+//     }
+//   }
+// }
+
 
 /*
 Returns all properties from the file.

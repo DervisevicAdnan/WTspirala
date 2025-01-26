@@ -52,47 +52,42 @@ module.exports = function (sequelize, DataTypes) {
         tableName: 'Ponuda',
     });
 
-    /*Ponuda.prototype.vezanePonude = async function () {
-        const getRelatedOffers = async (ponuda) => {
-            console.log("uslooo");
-            const relatedOffers = await Ponuda.findAll({
-                where: { vezanaPonudaId: ponuda.id }
-            });
-
-            if (relatedOffers.length === 0) {
-                return ponuda;
-            }
-
-            const children = await Promise.all(relatedOffers.map(getRelatedOffers));
-
-            return {
-                ...ponuda,
-                children
-            }
-        };
-
-        return getRelatedOffers(this);
-    };*/
-
     Object.defineProperty(Ponuda.prototype, 'vezanePonude', {
         get: async function() {
-            const getRelatedOffers = async (ponuda) => {
+            const getRelatedOffers = async (ponuda, obidjene, prvaId) => {
+
+                if (obidjene.some(pon => pon.id == ponuda.id)){
+                    return;
+                }
             
                 const relatedOffers = await Ponuda.findAll({
                     where: { vezanaPonudaId: ponuda.id }
                 });
-    
-                if (relatedOffers.length === 0) {
-                    return ponuda.dataValues;
+
+                if(ponuda.id != prvaId){
+                    obidjene.push(ponuda.dataValues);
+                }
+
+                if (relatedOffers.length !== 0) {
+                    await Promise.all(relatedOffers.map(pon => getRelatedOffers(pon, obidjene, prvaId)));
                 }
     
-                const children = await Promise.all(relatedOffers.map(getRelatedOffers));
-                //console.log("children",children)
+                if(ponuda.vezanaPonudaId !== null){
+                    const roditelj = await Ponuda.findOne({
+                        where:{
+                            id: ponuda.vezanaPonudaId
+                        }
+                    });
+                    if(roditelj){
+                        await getRelatedOffers(roditelj, obidjene, prvaId);
+                    }
+                }
     
-                return [ponuda.dataValues].concat(children);
+                return;
             };
-
-            return await getRelatedOffers(this);
+            let vezane = [];
+            await getRelatedOffers(this, vezane, this.id);
+            return vezane;
         }
     });
 

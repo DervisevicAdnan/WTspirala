@@ -42,3 +42,6 @@
 [2025-01-25T16:42:01.999Z] - username: "adervisevi2" - status: "uspješno"
 [2025-01-25T16:43:25.890Z] - username: "adervisevi2" - status: "uspješno"
 [2025-01-25T20:00:40.095Z] - username: "adervisevi2" - status: "uspješno"
+[2025-01-26T07:01:28.900Z] - username: "adervisevi2" - status: "neuspješno"
+[2025-01-26T07:01:35.668Z] - username: "adervisevi2" - status: "uspješno"
+[2025-01-26T07:03:39.611Z] - username: "adervisevi2" - status: "uspješno"
